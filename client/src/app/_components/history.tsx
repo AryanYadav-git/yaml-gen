@@ -14,7 +14,7 @@ const History = () => {
   return (
     <div className="">
       <h1 className="font-bold text-xl mb-2">History</h1>
-    <div className="relative flex h-full w-full xl:w-1/2 flex-col items-center justify-center overflow-hidden rounded-lg ">
+    <div className="relative flex h-full w-full flex-col items-center justify-center overflow-hidden rounded-lg ">
       <Tree
         className=" overflow-hidden rounded-md  "
         initialSelectedId="1"
