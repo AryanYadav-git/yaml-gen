@@ -1,8 +1,8 @@
-'use server'
+"use server";
 import { SpheronSDK } from "@spheron/protocol-sdk";
 
 let sdk: SpheronSDK;
-const PROVIDER_PROXY_URL = "http://localhost:3040"
+const PROVIDER_PROXY_URL = "http://localhost:3040";
 
 export const init = async (privateKey: string) => {
   try {
@@ -17,7 +17,7 @@ export const init = async (privateKey: string) => {
 export const main = async (privateKey: string) => {
   try {
     await init(privateKey);
-    
+
     // Ensure sdk is initialized before calling methods
     if (!sdk) {
       throw new Error("Spheron SDK is not initialized.");
@@ -30,7 +30,7 @@ export const main = async (privateKey: string) => {
 
     const balance = await sdk.escrow.getUserBalance("CST", walletAddress);
     console.log("User's balance: ", balance);
-    return {balance, walletAddress};
+    return { balance, walletAddress };
   } catch (error) {
     console.error("Error:", error);
   }
@@ -40,26 +40,40 @@ export const deploy = async (iclYaml: string) => {
   let deploymentTxn: any;
   try {
     console.log("Deploying start in fn", iclYaml);
-    deploymentTxn = await sdk.deployment.createDeployment(iclYaml, PROVIDER_PROXY_URL);
+    deploymentTxn = await sdk.deployment.createDeployment(
+      iclYaml,
+      PROVIDER_PROXY_URL
+    );
     console.log("Deployment created:", deploymentTxn);
   } catch (error) {
     console.error("Deployment creation failed:", error);
   }
-        // Fetch deployment logs
-        if (deploymentTxn.leaseId) {
-            console.log("Fetching deployment details...");
-            const deploymentDetails = await sdk.deployment.getDeployment(deploymentTxn.leaseId, PROVIDER_PROXY_URL);
-            console.log("Deployment details:", deploymentDetails, deploymentDetails.forwarded_ports);
+  // Fetch deployment logs
+  if (deploymentTxn.leaseId) {
+    console.log("Fetching deployment details...");
+    const deploymentDetails = await sdk.deployment.getDeployment(
+      deploymentTxn.leaseId,
+      PROVIDER_PROXY_URL
+    );
+    console.log(
+      "Deployment details:",
+      deploymentDetails,
+      deploymentDetails.forwarded_ports
+    );
 
-            console.log("Fetching lease details...");
-            const leaseDetails = await sdk.leases.getLeaseDetails(deploymentTxn.leaseId);
-            console.log("Lease details:", leaseDetails);
+    console.log("Fetching lease details...");
+    const leaseDetails = await sdk.leases.getLeaseDetails(
+      deploymentTxn.leaseId
+    );
+    console.log("Lease details:", leaseDetails);
 
-            console.log("Sleeping for 10 seconds...");
-            await new Promise(resolve => setTimeout(resolve, 10000));
+    console.log("Sleeping for 10 seconds...");
+    await new Promise((resolve) => setTimeout(resolve, 10000));
 
-            console.log("Closing deployment...");
-            const closeDeploymentDetails = await sdk.deployment.closeDeployment(deploymentTxn.leaseId);
-            console.log("Deployment closed:", closeDeploymentDetails);
-        }
-}
+    console.log("Closing deployment...");
+    const closeDeploymentDetails = await sdk.deployment.closeDeployment(
+      deploymentTxn.leaseId
+    );
+    console.log("Deployment closed:", closeDeploymentDetails);
+  }
+};

@@ -14,12 +14,14 @@ export function PlaceholdersAndVanishInputDemo() {
   
   const { user } = useUser();
   const placeholders = [
-    "What's the first rule of Fight Club?",
-    "Who is Tyler Durden?",
-    "Where is Andrew Laeddis Hiding?",
-    "Write a Javascript method to reverse a string",
-    "How to assemble your own PC?",
-  ];
+    "YAML for deploying Llama with 3GB RAM, 5GB storage",
+    "Kubernetes YAML for a FastAPI app",
+    "Docker Compose YAML for PostgreSQL",
+    "YAML for AWS Lambda with API Gateway",
+    "K8s YAML for Node.js with 4GB RAM"
+];
+
+
 
   useEffect(() => {
     setQuery(query)
