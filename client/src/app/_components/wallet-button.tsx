@@ -14,9 +14,14 @@ const WalletButton = () => {
   useEffect(() => {
     getCurrentWalletConnected();
     addWalletListener();
-    main();
   }, []);
 
+  useEffect(() => {
+    (async () => {
+      // await main();
+    })();
+  }, []);
+  
   const connectWallet = async () => {
     if (typeof window !== "undefined" && window.ethereum) {
       try {

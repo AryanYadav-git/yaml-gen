@@ -20,9 +20,10 @@ import axios from "axios";
 import Image from "next/image";
 import WalletButton from "./wallet-button";
 import { Feather } from "lucide-react";
+import WalletConnect from "./wallet-connect";
 export function SidebarDemo() {
   const { user } = useUser();
-  const {load, history, setHistory} =  useStateContext();
+  const {load, setHistory} =  useStateContext();
 
   const fetchHistory = async () => {
     const payLoad = {userid: user?.id}
@@ -99,7 +100,7 @@ export function SidebarDemo() {
           {filteredLinks.map((link, idx) => (
             <SidebarLink key={idx} link={link} />
           ))}
-          <div className=" bg-neutral-700 rounded-md px-6 py-4 w-fit font-semibold"><WalletButton/></div>
+          <WalletConnect/>
           <div className="flex items-center">
             <UserButton
               afterSignOutUrl="/"

@@ -2,7 +2,8 @@ import React, { useRef, useMemo, useState } from 'react';
 import ReactMarkdown, { Components } from 'react-markdown';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { atomDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
-import { Check, Copy } from 'lucide-react';
+import { Check, Copy, Upload } from 'lucide-react';
+import { deploy } from '@/actions/spheron';
 
 interface MarkdownRendererProps {
   markdown: string;
@@ -26,6 +27,11 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
     }
   };
 
+  const handleDeploy = async (code: string) => {
+    console.log("Deploying code:", code);
+    await deploy(code);
+  };
+
   const components = useMemo<Components>(
     () => ({
       code({ node, className, children, ...props }: any) {
@@ -36,12 +42,21 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
 
         return (
           <div className="relative group">
-            <button
-              onClick={() => handleCopy(codeString, uniqueId)}
-              className="absolute right-2 top-2 bg-gray-700 text-white p-1 rounded opacity-0 group-hover:opacity-100 transition"
-            >
-              {copied === uniqueId ? <Check size={16}/> : <Copy size={16} />}
-            </button>
+            <div className="absolute right-2 top-2 flex gap-2 opacity-0 group-hover:opacity-100 transition">
+              <button
+                onClick={() => handleCopy(codeString, uniqueId)}
+                className="bg-gray-700 text-white p-1 rounded"
+              >
+                {copied === uniqueId ? <Check size={16} /> : <Copy size={16} />}
+              </button>
+              <button
+                onClick={() => handleDeploy(codeString)}
+                className="bg-blue-700 text-white p-1 rounded"
+              >
+                {/* <Upload size={16} /> */}
+                Deploy
+              </button>
+            </div>
             <SyntaxHighlighter
               ref={ref}
               style={syntaxStyle}
